@@ -1,13 +1,37 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Vite + React + TS</title>
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
-  </body>
+
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>전통시장찾기</title>
+</head>
+
+<body>
+  <div id="root"></div>
+  <script type="module" src="/src/main.tsx"></script>
+  <script type="module">
+    (function loadKakaoSDK() {
+      const kakaoAppKey = import.meta.env.VITE_KAKAO_APP_KEY;
+      if (!kakaoAppKey) {
+        console.error("Kakao API Key가 정의되지 않았습니다. .env 파일을 확인하세요.");
+        return;
+      }
+
+      const script = document.createElement("script");
+      script.src = `https://dapi.kakao.com/v2/maps/sdk.js?appkey=${kakaoAppKey}&autoload=false`;
+      script.async = true;
+
+      script.onload = () => {
+        console.log("Kakao Maps SDK 로드 완료");
+        document.dispatchEvent(new Event("kakao-sdk-loaded")); // SDK 로드 완료 이벤트 발생
+      };
+
+      script.onerror = () => console.error("Kakao Maps SDK 로드 실패");
+      document.head.appendChild(script);
+    })()
+  </script>
+</body>
+
 </html>
